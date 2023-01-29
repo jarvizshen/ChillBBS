@@ -5,10 +5,11 @@ import com.chill.chillbbs.entity.post.Post;
 import com.chill.chillbbs.repository.post.PostRepository;
 import com.chill.chillbbs.service.post.PostService;
 import com.chill.chillbbs.util.Constants;
+import com.chill.chillbbs.util.PageUtil;
 import com.chill.chillbbs.util.PostOrderType;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,7 +28,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public CompletableFuture<List<Post>> search(String keyword) {
-        return CompletableFuture.completedFuture(postRepository.findAllByTitleOrContentLike("%" + keyword + "%"));
+        return CompletableFuture.completedFuture(postRepository.findAllByTitleOrContentLike("%" + keyword + "%", "%" + keyword + "%"));
     }
 
     @Override
@@ -45,6 +46,19 @@ public class PostServiceImpl implements PostService {
                 return CompletableFuture.completedFuture(postRepository.findAll(Sort.by(Sort.Direction.ASC, "commentNum")));
             }
         }
+    }
+
+    @Override
+    public CompletableFuture<Page<Post>> searchPage(String keyword, PostOrderType orderType, PostOrderType ascOrDesc, Pageable pageable) {
+        pageable = PageUtil.getPageable(orderType, ascOrDesc, pageable);
+        return CompletableFuture.completedFuture(postRepository.findAllByTitleOrContentLike("%" + keyword + "%", "%" + keyword + "%", pageable));
+    }
+
+
+    @Override
+    public CompletableFuture<Page<Post>> allPostsPage(PostOrderType orderType, PostOrderType ascOrDesc, Pageable pageable) {
+        pageable = PageUtil.getPageable(orderType, ascOrDesc, pageable);
+        return CompletableFuture.completedFuture(postRepository.findAll(pageable));
     }
 
 

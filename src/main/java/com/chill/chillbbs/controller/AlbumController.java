@@ -5,6 +5,7 @@ import com.chill.chillbbs.service.album.AlbumService;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,9 @@ public class AlbumController {
     AlbumService albumService;
 
     @GetMapping("/allPage")
-    public ResponseEntity<Object> getAllAlbumsPage(@RequestParam(required = false,
-            defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {
+    public ResponseEntity<Object> getAllAlbumsPage(@RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {
         try {
-            return ResponseEntity.ok(albumService.allAlbumsPage(PageRequest.of(page, size)).get());
+            return ResponseEntity.ok(albumService.allAlbumsPage(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "albumName"))).get());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -40,10 +40,18 @@ public class AlbumController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> search(String albumName, @RequestParam(required = false,
-            defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {
+    public ResponseEntity<Object> search(String albumName) {
         try {
             return ResponseEntity.ok(albumService.findAllByAlbumName(albumName).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/searchPage")
+    public ResponseEntity<Object> searchPage(String albumName, @RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {
+        try {
+            return ResponseEntity.ok(albumService.findAllByAlbumNamePage(albumName, PageRequest.of(page, size)).get());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }

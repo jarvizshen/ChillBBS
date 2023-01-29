@@ -2,6 +2,8 @@ package com.chill.chillbbs.service.post;
 
 import com.chill.chillbbs.entity.post.Post;
 import com.chill.chillbbs.util.PostOrderType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -32,6 +34,28 @@ public interface PostService {
      */
     @Async("chillPool")
     CompletableFuture<List<Post>> allPosts(PostOrderType orderType, PostOrderType ascOrDesc);
+
+    /**
+     * 模糊检索标题或内容
+     *
+     * @param keyword   关键字
+     * @param pageable  分页参数
+     * @param ascOrDesc 升序或降序
+     * @param orderType 排序类型
+     * @return 匹配结果
+     */
+    CompletableFuture<Page<Post>> searchPage(String keyword, PostOrderType orderType, PostOrderType ascOrDesc, Pageable pageable);
+
+    /**
+     * 返回所有帖子分页结果
+     *
+     * @param orderType 排序类型
+     * @param ascOrDesc 升序或降序
+     * @param pageable  分页参数
+     * @return 所有帖子分页结果
+     */
+    @Async("chillPool")
+    CompletableFuture<Page<Post>> allPostsPage(PostOrderType orderType, PostOrderType ascOrDesc, Pageable pageable);
 
     /**
      * 根据帖子id删除

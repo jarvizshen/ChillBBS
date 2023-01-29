@@ -21,6 +21,7 @@ public interface AlbumService {
      */
     @Async("chillPool")
     CompletableFuture<Page<Album>> allAlbumsPage(Pageable pageable);
+
     /**
      * 返回所有专辑
      *
@@ -46,6 +47,15 @@ public interface AlbumService {
      */
     @Async("chillPool")
     CompletableFuture<Album> saveOrUpdate(Album album);
+
+    /**
+     * 模糊检索
+     *
+     * @param albumName 专辑名称
+     * @param pageable  分页参数
+     * @return 匹配结果
+     */
+    CompletableFuture<Page<Album>> findAllByAlbumNamePage(String albumName, Pageable pageable);
 
     /**
      * 根据id删除专辑

@@ -4,6 +4,7 @@ import com.chill.chillbbs.entity.post.Post;
 import com.chill.chillbbs.service.post.PostService;
 import com.chill.chillbbs.util.PostOrderType;
 import jakarta.annotation.Resource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +30,18 @@ public class PostController {
         }
     }
 
-//    @RequestParam(required = false,
-//    defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size
+    @GetMapping("/allPage")
+    public ResponseEntity<Object> getAllPostsPage(@RequestParam(required = false
+            , defaultValue = "COMMENT") PostOrderType orderType
+            , @RequestParam(required = false
+            , defaultValue = "DESC") PostOrderType ascOrDesc, @RequestParam(required = false,
+            defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {
+        try {
+            return ResponseEntity.ok(postService.allPostsPage(orderType, ascOrDesc, PageRequest.of(page, size)).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllPosts(@RequestParam(required = false
@@ -52,6 +63,20 @@ public class PostController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
+    @GetMapping("/searchPage")
+    public ResponseEntity<Object> searchPage(String word, @RequestParam(required = false
+            , defaultValue = "COMMENT") PostOrderType orderType
+            , @RequestParam(required = false
+            , defaultValue = "DESC") PostOrderType ascOrDesc, @RequestParam(required = false,
+            defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {
+        try {
+            return ResponseEntity.ok(postService.searchPage(word, orderType, ascOrDesc, PageRequest.of(page, size)).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/add")
     public ResponseEntity<Object> saveOrUpdate(@RequestBody Post post) {

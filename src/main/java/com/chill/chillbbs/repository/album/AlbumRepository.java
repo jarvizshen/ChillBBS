@@ -20,5 +20,14 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
      * @param albumName 专辑名称
      * @return 匹配专辑
      */
-    List<Album> findAllByAlbumNameLike(String albumName);
+    List<Album> findAllByAlbumNameLikeOrderByAlbumNameAsc(String albumName);
+
+    /**
+     * 模糊检索专辑分页结果
+     *
+     * @param albumName 专辑名称
+     * @param pageable  分页参数
+     * @return 匹配专辑
+     */
+    Page<Album> findAllByAlbumNameLikeOrderByAlbumNameAsc(String albumName, Pageable pageable);
 }

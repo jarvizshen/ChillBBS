@@ -38,7 +38,12 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public CompletableFuture<List<Album>> findAllByAlbumName(String albumName) {
-        return CompletableFuture.completedFuture(albumRepository.findAllByAlbumNameLike("%" + albumName + "%"));
+        return CompletableFuture.completedFuture(albumRepository.findAllByAlbumNameLikeOrderByAlbumNameAsc("%" + albumName + "%"));
+    }
+
+    @Override
+    public CompletableFuture<Page<Album>> findAllByAlbumNamePage(String albumName, Pageable pageable) {
+        return CompletableFuture.completedFuture(albumRepository.findAllByAlbumNameLikeOrderByAlbumNameAsc("%" + albumName + "%", pageable));
     }
 
     @Override
