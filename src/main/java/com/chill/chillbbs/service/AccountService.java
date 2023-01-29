@@ -1,9 +1,11 @@
 package com.chill.chillbbs.service;
 
 import com.chill.chillbbs.entity.User;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 账户服务
@@ -16,7 +18,8 @@ public interface AccountService {
      *
      * @return 账户列表
      */
-    List<User> getAccounts();
+    @Async("chillPool")
+    CompletableFuture<List<User>> getAccounts();
 
     /**
      * 根据账户id删除用户
@@ -24,7 +27,8 @@ public interface AccountService {
      * @param id id
      * @return 是否删除成功
      */
-    boolean deleteAccountById(long id);
+    @Async("chillPool")
+    CompletableFuture<Boolean> deleteAccountById(long id);
 
     /**
      * 根据id查找用户
@@ -32,7 +36,18 @@ public interface AccountService {
      * @param id 用户id
      * @return 用户信息
      */
-    Optional<User> getById(Long id);
+    @Async("chillPool")
+    CompletableFuture<Optional<User>> getById(Long id);
+
+    /**
+     * 添加或更新用户信息
+     *
+     * @param user 用户信息
+     * @return 用户信息
+     */
+    @Async("chillPool")
+    CompletableFuture<User> saveOrUpdate(User user);
+
     /**
      * 根据用户名查找用户
      *

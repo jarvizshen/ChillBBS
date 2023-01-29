@@ -7,6 +7,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,15 +26,17 @@ import java.util.concurrent.CompletableFuture;
  * @author Jarviz
  */
 @RestController
-@EnableAsync
 @RequestMapping("/api/file")
 public class FileController {
     @Resource
     FileUploadService fileUploadService;
 
     @PostMapping("/upload")
-    @Async("chillPool")
-    public CompletableFuture<String> upload(UploadType type, MultipartFile[] files, HttpServletRequest request) throws IOException {
-        return CompletableFuture.completedFuture(fileUploadService.upload(type, files, request));
+    public Object upload(UploadType type, MultipartFile[] files, HttpServletRequest request) {
+        try {
+            return fileUploadService.upload(type, files, request).get();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 }

@@ -1,10 +1,10 @@
 package com.chill.chillbbs.service.album;
 
 import com.chill.chillbbs.entity.album.AlbumComment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 评论服务
@@ -15,10 +15,11 @@ public interface AlbumCommentService {
     /**
      * 获取一张专辑的所有评论
      *
-     * @param id       专辑id
+     * @param id 专辑id
      * @return 所有相关评论
      */
-    List<AlbumComment> getCommentsByAlbumId(Long id);
+    @Async("chillPool")
+    CompletableFuture<List<AlbumComment>> getCommentsByAlbumId(Long id);
 
     /**
      * 删除所有对应专辑的评论
@@ -33,7 +34,8 @@ public interface AlbumCommentService {
      * @param albumComment 评论实体
      * @return 是否添加成功
      */
-    Boolean add(AlbumComment albumComment);
+    @Async("chillPool")
+    CompletableFuture<Boolean> add(AlbumComment albumComment);
 
     /**
      * 删除评论
@@ -41,5 +43,6 @@ public interface AlbumCommentService {
      * @param albumComment 评论实体
      * @return 是否删除成功
      */
-    Boolean delete(AlbumComment albumComment);
+    @Async("chillPool")
+    CompletableFuture<Boolean> delete(AlbumComment albumComment);
 }

@@ -1,5 +1,7 @@
 package com.chill.chillbbs.service;
 
+import org.springframework.scheduling.annotation.Async;
+
 /**
  * token服务
  * @author Jarviz

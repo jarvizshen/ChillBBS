@@ -1,12 +1,11 @@
 package com.chill.chillbbs.controller;
 
 import com.chill.chillbbs.entity.User;
-import com.chill.chillbbs.repository.UserRepository;
+import com.chill.chillbbs.service.AccountService;
 import com.chill.chillbbs.service.TokenService;
 import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -24,7 +23,6 @@ import java.util.concurrent.CompletableFuture;
  */
 @RestController
 @RequestMapping("/api")
-@EnableAsync
 public class LoginController {
     @Resource
     AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -33,7 +31,7 @@ public class LoginController {
     @Resource
     TokenService tokenService;
     @Resource
-    UserRepository userRepository;
+    AccountService accountService;
 
     @PostMapping("/login")
     @Async("chillPool")
@@ -48,9 +46,12 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    @Async("chillPool")
-    public CompletableFuture<ResponseEntity<User>> register(@RequestBody User user) {
+    public ResponseEntity<Object> register(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return CompletableFuture.completedFuture(ResponseEntity.ok(userRepository.save(user)));
+        try {
+            return ResponseEntity.ok(accountService.saveOrUpdate(user).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 }

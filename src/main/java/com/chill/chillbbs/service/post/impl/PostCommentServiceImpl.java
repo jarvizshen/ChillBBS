@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * @author Jarviz
  */
@@ -22,8 +24,8 @@ public class PostCommentServiceImpl implements PostCommentService {
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public Page<PostComment> getCommentsByPostId(Long id, Pageable pageable) {
-        return postCommentRepository.getCommentByPostIdOrderByIdDesc(id, pageable);
+    public CompletableFuture<Page<PostComment>> getCommentsByPostId(Long id, Pageable pageable) {
+        return CompletableFuture.completedFuture(postCommentRepository.getCommentByPostIdOrderByIdDesc(id, pageable));
     }
 
     @Override
@@ -37,19 +39,19 @@ public class PostCommentServiceImpl implements PostCommentService {
     }
 
     @Override
-    public Boolean add(PostComment postComment) {
+    public CompletableFuture<Boolean> add(PostComment postComment) {
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_POST_DOC_COMMENT_NUMBER_KEY, postComment.getPostId());
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_POST_COMMENT_NUMBER_KEY, postComment.getPostId());
         postCommentRepository.save(postComment);
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
     @Override
-    public Boolean delete(PostComment postComment) {
+    public CompletableFuture<Boolean> delete(PostComment postComment) {
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_POST_DOC_COMMENT_NUMBER_KEY, postComment.getPostId());
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_POST_COMMENT_NUMBER_KEY, postComment.getPostId());
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
         postCommentRepository.delete(postComment);
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 }

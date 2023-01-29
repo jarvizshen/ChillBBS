@@ -5,18 +5,15 @@ import com.chill.chillbbs.repository.album.AlbumRepository;
 import com.chill.chillbbs.service.album.AlbumService;
 import com.chill.chillbbs.util.Constants;
 import jakarta.annotation.Resource;
-import jakarta.persistence.criteria.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.JpaSort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz
@@ -30,67 +27,57 @@ public class AlbumServiceImpl implements AlbumService {
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public Page<Album> allAlbumsPage(Pageable pageable) {
-        return albumRepository.findAll(pageable);
+    public CompletableFuture<Page<Album>> allAlbumsPage(Pageable pageable) {
+        return CompletableFuture.completedFuture(albumRepository.findAll(pageable));
     }
 
     @Override
-    public List<Album> allAlbums() {
-        return albumRepository.findAll(Sort.by(Sort.Direction.ASC, "albumName"));
+    public CompletableFuture<List<Album>> allAlbums() {
+        return CompletableFuture.completedFuture(albumRepository.findAll(Sort.by(Sort.Direction.ASC, "albumName")));
     }
 
     @Override
-    public List<Album> findAllByAlbumName(String albumName) {
-//        Specification<Album> specification = new Specification<Album>() {
-//            @Override
-//            public Predicate toPredicate(Root<Album> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-//                Path<String> albumName1 = root.get("albumName");
-//                Predicate predicate = criteriaBuilder.like(albumName1.type().as(String.class), "%" + albumName1 + "%");
-//                return predicate;
-//            }
-//        };
-        return albumRepository.findAllByAlbumNameLike("%" + albumName + "%");
+    public CompletableFuture<List<Album>> findAllByAlbumName(String albumName) {
+        return CompletableFuture.completedFuture(albumRepository.findAllByAlbumNameLike("%" + albumName + "%"));
     }
 
     @Override
-    public Boolean deleteAlbumById(long id) {
+    public CompletableFuture<Boolean> deleteAlbumById(long id) {
         try {
             rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COMMENT_KEY, id);
             albumRepository.deleteById(id);
-            return true;
+            return CompletableFuture.completedFuture(true);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return CompletableFuture.completedFuture(false);
         }
     }
 
     @Override
-    public Album saveOrUpdate(Album album) {
+    public CompletableFuture<Album> saveOrUpdate(Album album) {
         albumRepository.save(album);
-        return album;
+        return CompletableFuture.completedFuture(album);
     }
 
     @Override
-    public Optional<Album> getById(Long id) {
-        return albumRepository.findById(id);
+    public CompletableFuture<Optional<Album>> getById(Long id) {
+        return CompletableFuture.completedFuture(albumRepository.findById(id));
     }
 
     @Override
-    public Boolean increaseComment(Long albumId) {
+    public void increaseComment(Long albumId) {
         assert albumRepository.findById(albumId).isPresent();
         Album album = albumRepository.findById(albumId).get();
         album.setCommentNum(album.getCommentNum() + 1);
         System.out.println(album);
         saveOrUpdate(album);
-        return true;
     }
 
     @Override
-    public Boolean decreaseComment(Long postId) {
+    public void decreaseComment(Long postId) {
         assert albumRepository.findById(postId).isPresent();
         Album album = albumRepository.findById(postId).get();
         album.setCommentNum(album.getCommentNum() - 1);
         saveOrUpdate(album);
-        return true;
     }
 }

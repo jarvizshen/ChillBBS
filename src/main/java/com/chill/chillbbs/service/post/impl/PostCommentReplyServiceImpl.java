@@ -7,6 +7,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz
@@ -17,14 +18,14 @@ public class PostCommentReplyServiceImpl implements PostCommentReplyService {
     PostCommentReplyRepository postCommentReplyRepository;
 
     @Override
-    public List<PostCommentReply> getAllByCommentId(Long commentId) {
-        return postCommentReplyRepository.findAllByCommentId(commentId);
+    public CompletableFuture<List<PostCommentReply>> getAllByCommentId(Long commentId) {
+        return CompletableFuture.completedFuture(postCommentReplyRepository.findAllByCommentId(commentId));
     }
 
     @Override
-    public Boolean delete(Long id) {
+    public CompletableFuture<Boolean> delete(Long id) {
         postCommentReplyRepository.deleteById(id);
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
     @Override

@@ -6,11 +6,10 @@ import com.chill.chillbbs.service.album.AlbumCommentService;
 import com.chill.chillbbs.util.Constants;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz
@@ -25,8 +24,8 @@ public class AlbumCommentServiceImpl implements AlbumCommentService {
 
 
     @Override
-    public List<AlbumComment> getCommentsByAlbumId(Long id) {
-        return albumCommentRepository.findAllByAlbumId(id);
+    public CompletableFuture<List<AlbumComment>> getCommentsByAlbumId(Long id) {
+        return CompletableFuture.completedFuture(albumCommentRepository.findAllByAlbumId(id));
     }
 
     @Override
@@ -40,17 +39,17 @@ public class AlbumCommentServiceImpl implements AlbumCommentService {
     }
 
     @Override
-    public Boolean add(AlbumComment albumComment) {
+    public CompletableFuture<Boolean> add(AlbumComment albumComment) {
         albumCommentRepository.save(albumComment);
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_ALBUM_COMMENT_NUMBER_KEY, albumComment.getAlbumId());
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
     @Override
-    public Boolean delete(AlbumComment albumComment) {
+    public CompletableFuture<Boolean> delete(AlbumComment albumComment) {
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_ALBUM_COMMENT_NUMBER_KEY, albumComment.getAlbumId());
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COMMENT_REPLY_KEY, albumComment.getId());
         albumCommentRepository.delete(albumComment);
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 }

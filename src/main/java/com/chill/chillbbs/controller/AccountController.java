@@ -4,13 +4,13 @@ import com.chill.chillbbs.entity.User;
 import com.chill.chillbbs.service.AccountService;
 import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 账户服务接口
@@ -18,33 +18,41 @@ import java.util.concurrent.CompletableFuture;
  * @author Jarviz
  */
 @RestController
-@EnableAsync
 @RequestMapping("/api/account")
 public class AccountController {
     @Resource
     AccountService accountService;
 
-    @Async("chillPool")
     @GetMapping("/all")
-    public CompletableFuture<ResponseEntity<List<User>>> getAllUsers() {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(accountService.getAccounts()));
+    public ResponseEntity<Object> getAllUsers() {
+        try {
+            return ResponseEntity.ok(accountService.getAccounts().get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
-    @Async("chillPool")
     @GetMapping("/getById")
-    public CompletableFuture<ResponseEntity<Optional<User>>> getById(Long id) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(accountService.getById(id)));
+    public ResponseEntity<Object> getById(Long id) {
+        try {
+            return ResponseEntity.ok(accountService.getById(id).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
-    @Async("chillPool")
+
     @GetMapping("/getByUsername")
-    public CompletableFuture<ResponseEntity<User>> getById(String username) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(accountService.getByUsername(username)));
+    public ResponseEntity<User> getById(String username) {
+        return ResponseEntity.ok(accountService.getByUsername(username));
     }
 
     @DeleteMapping("/delete")
-    @Async("chillPool")
-    public CompletableFuture<ResponseEntity<Boolean>> delete(long id) {
-        return CompletableFuture.completedFuture(ResponseEntity.ok(accountService.deleteAccountById(id)));
+    public ResponseEntity<Object> delete(long id) {
+        try {
+            return ResponseEntity.ok(accountService.deleteAccountById(id).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
 }

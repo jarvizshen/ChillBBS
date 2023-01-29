@@ -7,15 +7,12 @@ import com.chill.chillbbs.service.post.PostService;
 import com.chill.chillbbs.util.Constants;
 import com.chill.chillbbs.util.PostOrderType;
 import jakarta.annotation.Resource;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz
@@ -29,82 +26,80 @@ public class PostServiceImpl implements PostService {
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public List<Post> search(String keyword) {
-        return postRepository.findAllByTitleOrContentLike("%" + keyword + "%");
+    public CompletableFuture<List<Post>> search(String keyword) {
+        return CompletableFuture.completedFuture(postRepository.findAllByTitleOrContentLike("%" + keyword + "%"));
     }
 
     @Override
-    public List<Post> allPosts(PostOrderType orderType, PostOrderType ascOrDesc) {
+    public CompletableFuture<List<Post>> allPosts(PostOrderType orderType, PostOrderType ascOrDesc) {
         if (ascOrDesc.equals(PostOrderType.DESC)) {
             if (orderType.equals(PostOrderType.CREATE)) {
-                return postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+                return CompletableFuture.completedFuture(postRepository.findAll(Sort.by(Sort.Direction.DESC, "id")));
             } else {
-                return postRepository.findAll(Sort.by(Sort.Direction.DESC, "commentNum"));
+                return CompletableFuture.completedFuture(postRepository.findAll(Sort.by(Sort.Direction.DESC, "commentNum")));
             }
         } else {
             if (orderType.equals(PostOrderType.CREATE)) {
-                return postRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+                return CompletableFuture.completedFuture(postRepository.findAll(Sort.by(Sort.Direction.ASC, "id")));
             } else {
-                return postRepository.findAll(Sort.by(Sort.Direction.ASC, "commentNum"));
+                return CompletableFuture.completedFuture(postRepository.findAll(Sort.by(Sort.Direction.ASC, "commentNum")));
             }
         }
     }
 
 
     @Override
-    public boolean deletePostById(long id) {
+    public CompletableFuture<Boolean> deletePostById(long id) {
         try {
             postRepository.deleteById(id);
             rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_KEY, id);
-            return true;
+            return CompletableFuture.completedFuture(true);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return CompletableFuture.completedFuture(false);
         }
     }
 
     @Override
-    public Post saveOrUpdatePost(Post post) {
+    public CompletableFuture<Post> saveOrUpdatePost(Post post) {
         post.setCreateTime(new Date());
         postRepository.save(post);
-        return post;
+        return CompletableFuture.completedFuture(post);
     }
 
     @Override
-    public Optional<Post> getById(Long id) {
-        return postRepository.findById(id);
+    public CompletableFuture<Optional<Post>> getById(Long id) {
+        return CompletableFuture.completedFuture(postRepository.findById(id));
     }
 
     @Override
-    public Boolean increaseComment(Long postId) {
+    public void increaseComment(Long postId) {
         assert postRepository.findById(postId).isPresent();
         Post post = postRepository.findById(postId).get();
         post.setCommentNum(post.getCommentNum() + 1);
         saveOrUpdatePost(post);
-        return true;
     }
 
     @Override
-    public Boolean decreaseComment(Long postId) {
+    public void decreaseComment(Long postId) {
         assert postRepository.findById(postId).isPresent();
         Post post = postRepository.findById(postId).get();
         post.setCommentNum(post.getCommentNum() - 1);
         saveOrUpdatePost(post);
-        return true;
     }
 
     @Override
-    public Boolean collected(Long postId, Boolean collected) {
+    public CompletableFuture<Boolean> collected(Long postId, Boolean collected) {
         assert postRepository.findById(postId).isPresent();
         Post post = postRepository.findById(postId).get();
         post.setCollected(collected ? 1 : 0);
         post.setCollectNum(post.getCollectNum() + (collected ? 1 : -1));
         saveOrUpdatePost(post);
-        Map<String, Object> collectData = new HashMap<>();
+        Map<String, Object> collectData = new HashMap<>(2);
         collectData.put("postId", postId);
         collectData.put("collected", collected);
         rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.POST_DOC_COLLECT_KEY, JSONObject.toJSONString(collectData));
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
 }

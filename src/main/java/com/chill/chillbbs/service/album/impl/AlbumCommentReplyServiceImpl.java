@@ -7,6 +7,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz
@@ -17,14 +18,14 @@ public class AlbumCommentReplyServiceImpl implements AlbumCommentReplyService {
     AlbumCommentReplyRepository albumCommentReplyRepository;
 
     @Override
-    public List<AlbumCommentReply> getAllByCommentId(Long commentId) {
-        return albumCommentReplyRepository.findAllByCommentId(commentId);
+    public CompletableFuture<List<AlbumCommentReply>> getAllByCommentId(Long commentId) {
+        return CompletableFuture.completedFuture(albumCommentReplyRepository.findAllByCommentId(commentId));
     }
 
     @Override
-    public Boolean delete(Long id) {
+    public CompletableFuture<Boolean> delete(Long id) {
         albumCommentReplyRepository.deleteById(id);
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
     @Override

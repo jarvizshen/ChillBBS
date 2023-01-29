@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz
@@ -18,24 +19,29 @@ public class AccountServiceImpl implements AccountService {
     UserRepository userRepository;
 
     @Override
-    public List<User> getAccounts() {
-        return userRepository.findAll();
+    public CompletableFuture<List<User>> getAccounts() {
+        return CompletableFuture.completedFuture(userRepository.findAll());
     }
 
     @Override
-    public boolean deleteAccountById(long id) {
+    public CompletableFuture<Boolean> deleteAccountById(long id) {
         try {
             userRepository.deleteById(id);
-            return true;
+            return CompletableFuture.completedFuture(true);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return CompletableFuture.completedFuture(false);
         }
     }
 
     @Override
-    public Optional<User> getById(Long id) {
-        return userRepository.findById(id);
+    public CompletableFuture<Optional<User>> getById(Long id) {
+        return CompletableFuture.completedFuture(userRepository.findById(id));
+    }
+
+    @Override
+    public CompletableFuture<User> saveOrUpdate(User user) {
+        return CompletableFuture.completedFuture(userRepository.save(user));
     }
 
     @Override

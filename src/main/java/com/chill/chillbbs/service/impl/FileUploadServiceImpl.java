@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz
@@ -29,7 +30,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     String userIconPath;
 
     @Override
-    public String upload(UploadType type, MultipartFile[] files, HttpServletRequest request) throws IOException {
+    public CompletableFuture<String> upload(UploadType type, MultipartFile[] files, HttpServletRequest request) throws IOException {
         List<String> list = new ArrayList<>();
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename();
@@ -58,12 +59,14 @@ public class FileUploadServiceImpl implements FileUploadService {
                 default -> throw new RuntimeException("文件类型不匹配");
             }
             if (!file1.exists()) {
-                file1.mkdirs();
+                if (!file1.mkdirs()) {
+                    throw new RuntimeException("创建路径失败");
+                }
             }
             file.transferTo(new File(file1, fileName));
             String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/file/" + menu + fileName;
             list.add(url);
         }
-        return new ObjectMapper().writeValueAsString(list);
+        return CompletableFuture.completedFuture(new ObjectMapper().writeValueAsString(list));
     }
 }

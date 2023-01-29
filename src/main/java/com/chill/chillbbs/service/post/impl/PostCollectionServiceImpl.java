@@ -6,6 +6,8 @@ import com.chill.chillbbs.service.post.PostCollectionService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * @author Jarviz
  */
@@ -15,14 +17,14 @@ public class PostCollectionServiceImpl implements PostCollectionService {
     PostCollectionRepository postCollectionRepository;
 
     @Override
-    public Boolean add(PostCollection postCollection) {
+    public CompletableFuture<Boolean> add(PostCollection postCollection) {
         postCollectionRepository.save(postCollection);
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
     @Override
-    public Boolean remove(Long postId) {
+    public CompletableFuture<Boolean> remove(Long postId) {
         postCollectionRepository.deleteById(postId);
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 }
