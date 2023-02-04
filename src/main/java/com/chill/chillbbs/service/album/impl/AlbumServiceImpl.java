@@ -5,6 +5,7 @@ import com.chill.chillbbs.repository.album.AlbumRepository;
 import com.chill.chillbbs.service.album.AlbumService;
 import com.chill.chillbbs.util.Constants;
 import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

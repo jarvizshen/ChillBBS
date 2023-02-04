@@ -1,6 +1,7 @@
 package com.chill.chillbbs.service.album;
 
 import com.chill.chillbbs.entity.album.AlbumCommentReply;
+import lombok.SneakyThrows;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface AlbumCommentReplyService {
      * @return 所有回复
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<List<AlbumCommentReply>> getAllByCommentId(Long commentId);
 
     /**
@@ -33,5 +35,7 @@ public interface AlbumCommentReplyService {
      *
      * @param commentId 评论id
      */
+    @SneakyThrows
+
     void deleteAllByCommentId(Long commentId);
 }

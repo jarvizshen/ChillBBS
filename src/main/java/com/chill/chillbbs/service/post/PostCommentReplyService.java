@@ -1,6 +1,7 @@
 package com.chill.chillbbs.service.post;
 
 import com.chill.chillbbs.entity.post.PostCommentReply;
+import lombok.SneakyThrows;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface PostCommentReplyService {
      * @return 所有回复
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<List<PostCommentReply>> getAllByCommentId(Long commentId);
 
     /**
@@ -33,5 +35,6 @@ public interface PostCommentReplyService {
      *
      * @param commentId 评论id
      */
+    @SneakyThrows
     void deleteAllByCommentId(Long commentId);
 }

@@ -8,6 +8,7 @@ import com.chill.chillbbs.util.Constants;
 import com.chill.chillbbs.util.PageUtil;
 import com.chill.chillbbs.util.PostOrderType;
 import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -109,10 +110,6 @@ public class PostServiceImpl implements PostService {
         post.setCollected(collected ? 1 : 0);
         post.setCollectNum(post.getCollectNum() + (collected ? 1 : -1));
         saveOrUpdatePost(post);
-        Map<String, Object> collectData = new HashMap<>(2);
-        collectData.put("postId", postId);
-        collectData.put("collected", collected);
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.POST_DOC_COLLECT_KEY, JSONObject.toJSONString(collectData));
         return CompletableFuture.completedFuture(true);
     }
 

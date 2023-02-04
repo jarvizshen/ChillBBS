@@ -1,6 +1,7 @@
 package com.chill.chillbbs.service.album;
 
 import com.chill.chillbbs.entity.album.Album;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -20,6 +21,8 @@ public interface AlbumService {
      * @return 所有专辑
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<Page<Album>> allAlbumsPage(Pageable pageable);
 
     /**
@@ -28,6 +31,8 @@ public interface AlbumService {
      * @return 所有专辑
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<List<Album>> allAlbums();
 
     /**
@@ -37,6 +42,8 @@ public interface AlbumService {
      * @return 匹配专辑
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<List<Album>> findAllByAlbumName(String albumName);
 
     /**
@@ -46,6 +53,8 @@ public interface AlbumService {
      * @return 是否添加或更新成功
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<Album> saveOrUpdate(Album album);
 
     /**
@@ -55,6 +64,8 @@ public interface AlbumService {
      * @param pageable  分页参数
      * @return 匹配结果
      */
+    @SneakyThrows
+
     CompletableFuture<Page<Album>> findAllByAlbumNamePage(String albumName, Pageable pageable);
 
     /**
@@ -73,6 +84,7 @@ public interface AlbumService {
      * @return 专辑帖子
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<Optional<Album>> getById(Long id);
 
     /**
@@ -80,6 +92,7 @@ public interface AlbumService {
      *
      * @param albumId 专辑id
      */
+    @SneakyThrows
     void increaseComment(Long albumId);
 
     /**
@@ -87,5 +100,6 @@ public interface AlbumService {
      *
      * @param albumId 专辑id
      */
+    @SneakyThrows
     void decreaseComment(Long albumId);
 }

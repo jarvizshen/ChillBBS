@@ -4,6 +4,7 @@ import com.chill.chillbbs.entity.post.PostCommentReply;
 import com.chill.chillbbs.repository.post.PostCommentReplyRepository;
 import com.chill.chillbbs.service.post.PostCommentReplyService;
 import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +25,13 @@ public class PostCommentReplyServiceImpl implements PostCommentReplyService {
 
     @Override
     public CompletableFuture<Boolean> delete(Long id) {
-        postCommentReplyRepository.deleteById(id);
-        return CompletableFuture.completedFuture(true);
+        try {
+            postCommentReplyRepository.deleteById(id);
+            return CompletableFuture.completedFuture(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            return CompletableFuture.completedFuture(false);
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.chill.chillbbs.service.post;
 
 import com.chill.chillbbs.entity.post.Post;
 import com.chill.chillbbs.util.PostOrderType;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -23,6 +24,8 @@ public interface PostService {
      * @return 匹配结果
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<List<Post>> search(String keyword);
 
     /**
@@ -33,6 +36,8 @@ public interface PostService {
      * @return 所有帖子
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<List<Post>> allPosts(PostOrderType orderType, PostOrderType ascOrDesc);
 
     /**
@@ -44,6 +49,8 @@ public interface PostService {
      * @param orderType 排序类型
      * @return 匹配结果
      */
+    @SneakyThrows
+
     CompletableFuture<Page<Post>> searchPage(String keyword, PostOrderType orderType, PostOrderType ascOrDesc, Pageable pageable);
 
     /**
@@ -55,6 +62,8 @@ public interface PostService {
      * @return 所有帖子分页结果
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<Page<Post>> allPostsPage(PostOrderType orderType, PostOrderType ascOrDesc, Pageable pageable);
 
     /**
@@ -73,6 +82,8 @@ public interface PostService {
      * @return 是否添加或更新成功
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<Post> saveOrUpdatePost(Post postEntity);
 
     /**
@@ -82,6 +93,8 @@ public interface PostService {
      * @return 对应帖子
      */
     @Async("chillPool")
+    @SneakyThrows
+
     CompletableFuture<Optional<Post>> getById(Long id);
 
     /**
@@ -89,6 +102,8 @@ public interface PostService {
      *
      * @param postId 话题id
      */
+    @SneakyThrows
+
     void increaseComment(Long postId);
 
     /**
@@ -96,6 +111,8 @@ public interface PostService {
      *
      * @param postId 话题id
      */
+    @SneakyThrows
+
     void decreaseComment(Long postId);
 
     /**
@@ -106,5 +123,6 @@ public interface PostService {
      * @return 是否成功
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<Boolean> collected(Long postId, Boolean collected);
 }

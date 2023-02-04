@@ -1,9 +1,9 @@
 package com.chill.chillbbs.service.album.impl;
-
 import com.chill.chillbbs.entity.album.AlbumCommentReply;
 import com.chill.chillbbs.repository.album.AlbumCommentReplyRepository;
 import com.chill.chillbbs.service.album.AlbumCommentReplyService;
 import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +24,13 @@ public class AlbumCommentReplyServiceImpl implements AlbumCommentReplyService {
 
     @Override
     public CompletableFuture<Boolean> delete(Long id) {
-        albumCommentReplyRepository.deleteById(id);
-        return CompletableFuture.completedFuture(true);
+        try {
+            albumCommentReplyRepository.deleteById(id);
+            return CompletableFuture.completedFuture(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            return CompletableFuture.completedFuture(false);
+        }
     }
 
     @Override

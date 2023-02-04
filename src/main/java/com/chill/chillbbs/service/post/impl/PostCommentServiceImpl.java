@@ -5,6 +5,7 @@ import com.chill.chillbbs.repository.post.PostCommentRepository;
 import com.chill.chillbbs.service.post.PostCommentService;
 import com.chill.chillbbs.util.Constants;
 import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,27 +32,35 @@ public class PostCommentServiceImpl implements PostCommentService {
     @Override
     public void deleteAllByPostId(Long postId) {
         if (postCommentRepository.findAllByPostId(postId).size() > 0) {
-            postCommentRepository.findAllByPostId(postId).forEach(postComment -> {
-                postCommentRepository.deleteById(postComment.getId());
-                rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
-            });
+                postCommentRepository.findAllByPostId(postId).forEach(postComment -> {
+                    postCommentRepository.deleteById(postComment.getId());
+                    rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
+                });
         }
     }
 
     @Override
     public CompletableFuture<Boolean> add(PostComment postComment) {
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_POST_DOC_COMMENT_NUMBER_KEY, postComment.getPostId());
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_POST_COMMENT_NUMBER_KEY, postComment.getPostId());
-        postCommentRepository.save(postComment);
-        return CompletableFuture.completedFuture(true);
+        try {
+            postCommentRepository.save(postComment);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_POST_COMMENT_NUMBER_KEY, postComment.getPostId());
+            return CompletableFuture.completedFuture(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CompletableFuture.completedFuture(false);
+        }
     }
 
     @Override
     public CompletableFuture<Boolean> delete(PostComment postComment) {
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_POST_DOC_COMMENT_NUMBER_KEY, postComment.getPostId());
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_POST_COMMENT_NUMBER_KEY, postComment.getPostId());
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
-        postCommentRepository.delete(postComment);
-        return CompletableFuture.completedFuture(true);
+        try {
+            postCommentRepository.delete(postComment);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_POST_COMMENT_NUMBER_KEY, postComment.getPostId());
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
+            return CompletableFuture.completedFuture(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CompletableFuture.completedFuture(false);
+        }
     }
 }

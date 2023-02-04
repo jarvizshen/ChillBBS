@@ -32,7 +32,7 @@ public class PostController {
 
     @GetMapping("/allPage")
     public ResponseEntity<Object> getAllPostsPage(@RequestParam(required = false
-            , defaultValue = "COMMENT") PostOrderType orderType
+            , defaultValue = "CREATE") PostOrderType orderType
             , @RequestParam(required = false
             , defaultValue = "DESC") PostOrderType ascOrDesc, @RequestParam(required = false,
             defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {
@@ -66,7 +66,7 @@ public class PostController {
 
     @GetMapping("/searchPage")
     public ResponseEntity<Object> searchPage(String word, @RequestParam(required = false
-            , defaultValue = "COMMENT") PostOrderType orderType
+            , defaultValue = "CREATE") PostOrderType orderType
             , @RequestParam(required = false
             , defaultValue = "DESC") PostOrderType ascOrDesc, @RequestParam(required = false,
             defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "20") Integer size) {

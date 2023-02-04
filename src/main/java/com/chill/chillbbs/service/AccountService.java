@@ -1,6 +1,7 @@
 package com.chill.chillbbs.service;
 
 import com.chill.chillbbs.entity.User;
+import lombok.SneakyThrows;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public interface AccountService {
      * @return 账户列表
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<List<User>> getAccounts();
 
     /**
@@ -37,6 +39,7 @@ public interface AccountService {
      * @return 用户信息
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<Optional<User>> getById(Long id);
 
     /**
@@ -46,6 +49,7 @@ public interface AccountService {
      * @return 用户信息
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<User> saveOrUpdate(User user);
 
     /**
@@ -54,5 +58,6 @@ public interface AccountService {
      * @param username 用户id
      * @return 用户信息
      */
+    @SneakyThrows
     User getByUsername(String username);
 }

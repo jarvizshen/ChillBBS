@@ -5,6 +5,7 @@ import com.chill.chillbbs.repository.album.AlbumCommentRepository;
 import com.chill.chillbbs.service.album.AlbumCommentService;
 import com.chill.chillbbs.util.Constants;
 import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
@@ -40,16 +41,26 @@ public class AlbumCommentServiceImpl implements AlbumCommentService {
 
     @Override
     public CompletableFuture<Boolean> add(AlbumComment albumComment) {
-        albumCommentRepository.save(albumComment);
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_ALBUM_COMMENT_NUMBER_KEY, albumComment.getAlbumId());
-        return CompletableFuture.completedFuture(true);
+        try {
+            albumCommentRepository.save(albumComment);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_ALBUM_COMMENT_NUMBER_KEY, albumComment.getAlbumId());
+            return CompletableFuture.completedFuture(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CompletableFuture.completedFuture(false);
+        }
     }
 
     @Override
     public CompletableFuture<Boolean> delete(AlbumComment albumComment) {
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_ALBUM_COMMENT_NUMBER_KEY, albumComment.getAlbumId());
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COMMENT_REPLY_KEY, albumComment.getId());
-        albumCommentRepository.delete(albumComment);
-        return CompletableFuture.completedFuture(true);
+        try {
+            albumCommentRepository.delete(albumComment);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DECREASE_ALBUM_COMMENT_NUMBER_KEY, albumComment.getAlbumId());
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COMMENT_REPLY_KEY, albumComment.getId());
+            return CompletableFuture.completedFuture(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CompletableFuture.completedFuture(false);
+        }
     }
 }

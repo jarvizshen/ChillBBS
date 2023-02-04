@@ -1,6 +1,7 @@
 package com.chill.chillbbs.service.post;
 
 import com.chill.chillbbs.entity.post.PostComment;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -21,6 +22,7 @@ public interface PostCommentService {
      * @return 所有相关评论
      */
     @Async("chillPool")
+    @SneakyThrows
     CompletableFuture<Page<PostComment>> getCommentsByPostId(Long id, Pageable pageable);
 
     /**
@@ -28,6 +30,8 @@ public interface PostCommentService {
      *
      * @param postId 话题id
      */
+    @SneakyThrows
+
     void deleteAllByPostId(Long postId);
 
     /**
