@@ -1,6 +1,6 @@
 package com.chill.chillbbs.service.mq;
 
-import com.chill.chillbbs.util.Constants;
+import com.chill.chillbbs.service.util.Constants;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -176,6 +176,22 @@ public class DirectMqConfiguration {
     @Bean
     public Binding deletePostCommentBinding() {
         return BindingBuilder.bind(deletePostCommentQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_COMMENT_KEY);
+    }
+
+    /**
+     * @return 删除话题附件队列
+     */
+    @Bean
+    public Queue deletePostFileQueue() {
+        return new Queue(Constants.DELETE_POST_FILE_QUEUE);
+    }
+
+    /**
+     * @return 删除话题附件绑定
+     */
+    @Bean
+    public Binding deletePostFileBinding() {
+        return BindingBuilder.bind(deletePostFileQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_FILE_KEY);
     }
 
     /**

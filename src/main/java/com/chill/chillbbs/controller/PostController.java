@@ -2,15 +2,11 @@ package com.chill.chillbbs.controller;
 
 import com.chill.chillbbs.entity.post.Post;
 import com.chill.chillbbs.service.post.PostService;
-import com.chill.chillbbs.util.PostOrderType;
+import com.chill.chillbbs.service.util.PostOrderType;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jarviz

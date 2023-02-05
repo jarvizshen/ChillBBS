@@ -1,7 +1,7 @@
 package com.chill.chillbbs.service.post;
 
 import com.chill.chillbbs.entity.post.Post;
-import com.chill.chillbbs.util.PostOrderType;
+import com.chill.chillbbs.service.util.PostOrderType;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

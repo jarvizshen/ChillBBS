@@ -1,4 +1,4 @@
-package com.chill.chillbbs.util;
+package com.chill.chillbbs.service.util;
 
 /**
  * @author Jarviz
@@ -80,6 +80,14 @@ public class Constants {
      * 删除话题评论路由键
      */
     public final static String DELETE_POST_COMMENT_KEY = "deletePostComment";
+    /**
+     * 删除话题附件队列名称
+     */
+    public final static String DELETE_POST_FILE_QUEUE = "queue.postFile.delete";
+    /**
+     * 删除话题附件路由键
+     */
+    public final static String DELETE_POST_FILE_KEY = "deletePostFile";
 
 
     /**

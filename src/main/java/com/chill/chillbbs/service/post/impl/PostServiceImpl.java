@@ -1,14 +1,12 @@
 package com.chill.chillbbs.service.post.impl;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.chill.chillbbs.entity.post.Post;
 import com.chill.chillbbs.repository.post.PostRepository;
 import com.chill.chillbbs.service.post.PostService;
-import com.chill.chillbbs.util.Constants;
-import com.chill.chillbbs.util.PageUtil;
-import com.chill.chillbbs.util.PostOrderType;
+import com.chill.chillbbs.service.util.Constants;
+import com.chill.chillbbs.service.util.PageUtil;
+import com.chill.chillbbs.service.util.PostOrderType;
 import jakarta.annotation.Resource;
-import lombok.SneakyThrows;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -68,6 +66,7 @@ public class PostServiceImpl implements PostService {
         try {
             postRepository.deleteById(id);
             rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_KEY, id);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_FILE_KEY, id);
             return CompletableFuture.completedFuture(true);
         } catch (Exception e) {
             e.printStackTrace();

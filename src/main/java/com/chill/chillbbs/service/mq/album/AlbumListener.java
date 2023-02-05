@@ -1,8 +1,7 @@
 package com.chill.chillbbs.service.mq.album;
 
 import com.chill.chillbbs.service.album.AlbumService;
-import com.chill.chillbbs.service.post.PostService;
-import com.chill.chillbbs.util.Constants;
+import com.chill.chillbbs.service.util.Constants;
 import com.rabbitmq.client.Channel;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

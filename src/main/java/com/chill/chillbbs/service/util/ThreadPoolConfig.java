@@ -1,4 +1,4 @@
-package com.chill.chillbbs.util;
+package com.chill.chillbbs.service.util;
 
 import lombok.Data;
 import lombok.extern.java.Log;

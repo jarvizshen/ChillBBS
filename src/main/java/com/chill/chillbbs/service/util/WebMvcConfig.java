@@ -1,4 +1,4 @@
-package com.chill.chillbbs.util;
+package com.chill.chillbbs.service.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

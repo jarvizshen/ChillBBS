@@ -1,6 +1,6 @@
 package com.chill.chillbbs.service.mq;
 
-import com.chill.chillbbs.util.Constants;
+import com.chill.chillbbs.service.util.Constants;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;

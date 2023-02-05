@@ -3,9 +3,8 @@ package com.chill.chillbbs.service.album.impl;
 import com.chill.chillbbs.entity.album.AlbumComment;
 import com.chill.chillbbs.repository.album.AlbumCommentRepository;
 import com.chill.chillbbs.service.album.AlbumCommentService;
-import com.chill.chillbbs.util.Constants;
+import com.chill.chillbbs.service.util.Constants;
 import jakarta.annotation.Resource;
-import lombok.SneakyThrows;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
