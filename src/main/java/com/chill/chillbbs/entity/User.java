@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,8 @@ public class User {
     private String tel;
 
     private String role;
-
+    @CreatedDate
+    @Column(updatable = false)
     private Date createTime;
 
     private Date updateTime;

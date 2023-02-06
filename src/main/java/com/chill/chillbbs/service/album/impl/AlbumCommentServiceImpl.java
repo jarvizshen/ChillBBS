@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -41,6 +42,7 @@ public class AlbumCommentServiceImpl implements AlbumCommentService {
     @Override
     public CompletableFuture<Boolean> add(AlbumComment albumComment) {
         try {
+            albumComment.setCreateTime(new Date());
             albumCommentRepository.save(albumComment);
             rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_ALBUM_COMMENT_NUMBER_KEY, albumComment.getAlbumId());
             return CompletableFuture.completedFuture(true);

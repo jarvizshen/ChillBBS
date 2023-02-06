@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -98,7 +99,7 @@ public class FileServiceImpl implements FileService {
             list.add(url);
             file.transferTo(new File(file1, fileName));
             if (addPostFile(PostFile.builder().postId(postId).fileName(fileName)
-                    .fileSize(file.getSize()).fileLink(url).build()).get() == null) {
+                    .fileSize(file.getSize()).fileLink(url).createTime(new Date()).build()).get() == null) {
                 throw new Exception("添加文件数据失败");
             }
         }

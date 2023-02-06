@@ -10,6 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -29,18 +32,24 @@ public class PostCommentServiceImpl implements PostCommentService {
     }
 
     @Override
+    public CompletableFuture<List<PostComment>> getCommentsByUserId(Long id) {
+        return CompletableFuture.completedFuture(postCommentRepository.findAllByUserId(id));
+    }
+
+    @Override
     public void deleteAllByPostId(Long postId) {
         if (postCommentRepository.findAllByPostId(postId).size() > 0) {
-                postCommentRepository.findAllByPostId(postId).forEach(postComment -> {
-                    postCommentRepository.deleteById(postComment.getId());
-                    rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
-                });
+            postCommentRepository.findAllByPostId(postId).forEach(postComment -> {
+                postCommentRepository.deleteById(postComment.getId());
+                rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
+            });
         }
     }
 
     @Override
     public CompletableFuture<Boolean> add(PostComment postComment) {
         try {
+            postComment.setCreateTime(new Date());
             postCommentRepository.save(postComment);
             rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.INCREASE_POST_COMMENT_NUMBER_KEY, postComment.getPostId());
             return CompletableFuture.completedFuture(true);
@@ -61,5 +70,10 @@ public class PostCommentServiceImpl implements PostCommentService {
             e.printStackTrace();
             return CompletableFuture.completedFuture(false);
         }
+    }
+
+    @Override
+    public CompletableFuture<Optional<PostComment>> getById(Long id) {
+        return CompletableFuture.completedFuture(postCommentRepository.findById(id));
     }
 }

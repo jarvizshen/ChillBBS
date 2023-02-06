@@ -41,4 +41,11 @@ public interface PostCommentRepository extends JpaRepository<PostComment, Long> 
      * @return 所有对应评论
      */
     List<PostComment> findAllByPostId(Long postId);
+    /**
+     * 获取所有对应用户的评论
+     *
+     * @param userId 用户id
+     * @return 所有对应评论
+     */
+    List<PostComment> findAllByUserId(Long userId);
 }

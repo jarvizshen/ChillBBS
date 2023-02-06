@@ -29,6 +29,15 @@ public class PostCommentController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<Object> getCommentById(Long id) {
+        try {
+            return ResponseEntity.ok(postCommentService.getById(id).get());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Object> add(@RequestBody PostComment postComment) {
         try {

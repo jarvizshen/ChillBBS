@@ -40,7 +40,7 @@ public class AlbumListener {
         }
     }
 
-    @RabbitListener(queues = {Constants.DECREASE_POST_COMMENT_NUMBER_QUEUE})
+    @RabbitListener(queues = {Constants.DECREASE_ALBUM_COMMENT_NUMBER_QUEUE})
     public void decreaseCommentListener(Long id, Channel channel,
                                         @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
         try {
