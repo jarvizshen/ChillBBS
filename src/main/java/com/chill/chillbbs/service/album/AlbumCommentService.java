@@ -30,7 +30,6 @@ public interface AlbumCommentService {
      * @param albumId 专辑id
      */
     @SneakyThrows
-
     void deleteAllByAlbumId(Long albumId);
 
     /**

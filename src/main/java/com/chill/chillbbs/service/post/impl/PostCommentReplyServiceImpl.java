@@ -28,10 +28,15 @@ public class PostCommentReplyServiceImpl implements PostCommentReplyService {
         try {
             postCommentReplyRepository.deleteById(id);
             return CompletableFuture.completedFuture(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return CompletableFuture.completedFuture(false);
         }
+    }
+
+    @Override
+    public CompletableFuture<PostCommentReply> add(PostCommentReply postCommentReply) {
+        return CompletableFuture.completedFuture(postCommentReplyRepository.save(postCommentReply));
     }
 
     @Override

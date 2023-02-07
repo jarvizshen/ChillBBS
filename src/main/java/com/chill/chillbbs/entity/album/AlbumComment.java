@@ -7,11 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author Jarviz
@@ -29,6 +25,7 @@ public class AlbumComment {
     private long id;
     private Long userId;
     private Long albumId;
+    private Long likeNum;
     private String content;
     private Date createTime;
 }

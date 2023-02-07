@@ -1,6 +1,9 @@
 package com.chill.chillbbs.controller;
 
 import com.chill.chillbbs.entity.post.Post;
+import com.chill.chillbbs.entity.post.PostCollection;
+import com.chill.chillbbs.service.post.PostCollectionService;
+import com.chill.chillbbs.service.post.PostLikedService;
 import com.chill.chillbbs.service.post.PostService;
 import com.chill.chillbbs.service.util.PostOrderType;
 import jakarta.annotation.Resource;
@@ -16,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     @Resource
     PostService postService;
+
+    @Resource
+    PostLikedService postLikedService;
 
     @GetMapping("/getById")
     public ResponseEntity<Object> getById(Long id) {
@@ -87,15 +93,6 @@ public class PostController {
     public ResponseEntity<Object> delete(long id) {
         try {
             return ResponseEntity.ok(postService.deletePostById(id).get());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/collect")
-    public ResponseEntity<Object> collect(Long postId, Boolean collected) {
-        try {
-            return ResponseEntity.ok(postService.collected(postId, collected).get());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }

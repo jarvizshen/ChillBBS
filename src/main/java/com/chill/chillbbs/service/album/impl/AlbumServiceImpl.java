@@ -49,8 +49,9 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public CompletableFuture<Boolean> deleteAlbumById(long id) {
         try {
-            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COMMENT_KEY, id);
             albumRepository.deleteById(id);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COMMENT_KEY, id);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COLLECTION_KEY, id);
             return CompletableFuture.completedFuture(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,10 +80,26 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void decreaseComment(Long postId) {
-        assert albumRepository.findById(postId).isPresent();
-        Album album = albumRepository.findById(postId).get();
+    public void decreaseComment(Long albumId) {
+        assert albumRepository.findById(albumId).isPresent();
+        Album album = albumRepository.findById(albumId).get();
         album.setCommentNum(album.getCommentNum() - 1);
+        saveOrUpdate(album);
+    }
+
+    @Override
+    public void increaseCollect(Long albumId) {
+        assert albumRepository.findById(albumId).isPresent();
+        Album album = albumRepository.findById(albumId).get();
+        album.setCollectNum(album.getCollectNum() + 1);
+        saveOrUpdate(album);
+    }
+
+    @Override
+    public void decreaseCollect(Long albumId) {
+        assert albumRepository.findById(albumId).isPresent();
+        Album album = albumRepository.findById(albumId).get();
+        album.setCollectNum(album.getCollectNum() - 1);
         saveOrUpdate(album);
     }
 }

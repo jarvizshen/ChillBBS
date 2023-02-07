@@ -1,4 +1,5 @@
 package com.chill.chillbbs.service.album.impl;
+
 import com.chill.chillbbs.entity.album.AlbumCommentReply;
 import com.chill.chillbbs.repository.album.AlbumCommentReplyRepository;
 import com.chill.chillbbs.service.album.AlbumCommentReplyService;
@@ -27,10 +28,15 @@ public class AlbumCommentReplyServiceImpl implements AlbumCommentReplyService {
         try {
             albumCommentReplyRepository.deleteById(id);
             return CompletableFuture.completedFuture(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return CompletableFuture.completedFuture(false);
         }
+    }
+
+    @Override
+    public CompletableFuture<AlbumCommentReply> add(AlbumCommentReply albumCommentReply) {
+        return CompletableFuture.completedFuture(albumCommentReplyRepository.save(albumCommentReply));
     }
 
     @Override

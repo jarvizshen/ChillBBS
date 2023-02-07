@@ -102,4 +102,19 @@ public interface AlbumService {
      */
     @SneakyThrows
     void decreaseComment(Long albumId);
+    /**
+     * 收藏数量加一
+     *
+     * @param albumId 专辑id
+     */
+    @SneakyThrows
+    void increaseCollect(Long albumId);
+
+    /**
+     * 收藏数量减一
+     *
+     * @param albumId 专辑id
+     */
+    @SneakyThrows
+    void decreaseCollect(Long albumId);
 }

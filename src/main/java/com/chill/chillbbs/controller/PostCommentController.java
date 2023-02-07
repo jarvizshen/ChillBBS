@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
  * @author Jarviz
  */
 @RestController
-@RequestMapping("/api/postComment")
+@RequestMapping("/api/post/comment")
 public class PostCommentController {
     @Resource
     PostCommentService postCommentService;

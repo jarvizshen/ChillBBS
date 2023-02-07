@@ -57,46 +57,69 @@ public class DirectMqConfiguration {
     }
 
     /**
-     * @return 增加es话题评论数量队列
+     * @return 增加话题收藏数量队列
      */
     @Bean
-    public Queue increasePostDocCommentQueue() {
-        return new Queue(Constants.INCREASE_POST_DOC_COMMENT_NUMBER_QUEUE);
+    public Queue increasePostCollectNumQueue() {
+        return new Queue(Constants.INCREASE_POST_COLLECT_NUMBER_QUEUE);
     }
 
     /**
-     * @return 增加es话题评论数量绑定
+     * @return 增加话题收藏数量绑定
      */
     @Bean
-    public Binding increasePostDocCommentBinding() {
-        return BindingBuilder.bind(increasePostDocCommentQueue()).to(dataSyncExchange()).with(Constants.INCREASE_POST_DOC_COMMENT_NUMBER_KEY);
+    public Binding increasePostCollectNumBinding() {
+        return BindingBuilder.bind(increasePostCollectNumQueue()).to(dataSyncExchange()).with(Constants.INCREASE_POST_COLLECT_NUMBER_KEY);
     }
 
     /**
-     * @return 减少es话题评论数量队列
+     * @return 减少话题收藏数量队列
      */
     @Bean
-    public Queue decreasePostDocCommentQueue() {
-        return new Queue(Constants.DECREASE_POST_DOC_COMMENT_NUMBER_QUEUE);
+    public Queue decreasePostCollectNumQueue() {
+        return new Queue(Constants.DECREASE_POST_COLLECT_NUMBER_QUEUE);
     }
 
     /**
-     * @return 减少es话题评论数量绑定
+     * @return 减少话题收藏数量绑定
      */
     @Bean
-    public Binding decreasePostDocCommentBinding() {
-        return BindingBuilder.bind(decreasePostDocCommentQueue()).to(dataSyncExchange()).with(Constants.DECREASE_POST_DOC_COMMENT_NUMBER_KEY);
+    public Binding decreasePostCollectNumBinding() {
+        return BindingBuilder.bind(decreasePostCollectNumQueue()).to(dataSyncExchange()).with(Constants.DECREASE_POST_COLLECT_NUMBER_KEY);
     }
 
+    /**
+     * @return 增加话题喜爱数量队列
+     */
     @Bean
-    public Queue changePostDocCollectedQueue() {
-        return new Queue(Constants.POST_DOC_COLLECT_QUEUE);
+    public Queue increasePostLikeNumQueue() {
+        return new Queue(Constants.INCREASE_POST_LIKE_NUMBER_QUEUE);
     }
 
+    /**
+     * @return 增加话题喜爱数量绑定
+     */
     @Bean
-    public Binding changePostDocCollectedBinding() {
-        return BindingBuilder.bind(changePostDocCollectedQueue()).to(dataSyncExchange()).with(Constants.POST_DOC_COLLECT_KEY);
+    public Binding increasePostLikeNumBinding() {
+        return BindingBuilder.bind(increasePostLikeNumQueue()).to(dataSyncExchange()).with(Constants.INCREASE_POST_LIKE_NUMBER_KEY);
     }
+
+    /**
+     * @return 减少话题喜爱数量队列
+     */
+    @Bean
+    public Queue decreasePostLikeNumQueue() {
+        return new Queue(Constants.DECREASE_POST_LIKE_NUMBER_QUEUE);
+    }
+
+    /**
+     * @return 减少话题喜爱数量绑定
+     */
+    @Bean
+    public Binding decreasePostLikeNumBinding() {
+        return BindingBuilder.bind(decreasePostLikeNumQueue()).to(dataSyncExchange()).with(Constants.DECREASE_POST_LIKE_NUMBER_KEY);
+    }
+
 
     /**
      * @return 增加专辑评论数量队列
@@ -131,35 +154,35 @@ public class DirectMqConfiguration {
     }
 
     /**
-     * @return 添加es话题队列
+     * @return 增加专辑收藏数量队列
      */
     @Bean
-    public Queue addPostDocQueue() {
-        return new Queue(Constants.ADD_POST_DOC_QUEUE);
+    public Queue increaseAlbumCollectNumQueue() {
+        return new Queue(Constants.INCREASE_ALBUM_COLLECT_NUMBER_QUEUE);
     }
 
     /**
-     * @return 添加es话题绑定
+     * @return 增加专辑收藏数量绑定
      */
     @Bean
-    public Binding addPostDocBinding() {
-        return BindingBuilder.bind(addPostDocQueue()).to(dataSyncExchange()).with(Constants.ADD_POST_DOC_KEY);
+    public Binding increaseAlbumCollectNumBinding() {
+        return BindingBuilder.bind(increaseAlbumCollectNumQueue()).to(dataSyncExchange()).with(Constants.INCREASE_ALBUM_COLLECT_NUMBER_KEY);
     }
 
     /**
-     * @return 删除es话题队列
+     * @return 减少专辑收藏数量队列
      */
     @Bean
-    public Queue deletePostDocQueue() {
-        return new Queue(Constants.DELETE_POST_DOC_QUEUE);
+    public Queue decreaseAlbumCollectNumQueue() {
+        return new Queue(Constants.DECREASE_ALBUM_COLLECT_NUMBER_QUEUE);
     }
 
     /**
-     * @return 删除es话题绑定
+     * @return 减少专辑收藏数量绑定
      */
     @Bean
-    public Binding deletePostDocBinding() {
-        return BindingBuilder.bind(deletePostDocQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_DOC_KEY);
+    public Binding decreaseAlbumCollectNumBinding() {
+        return BindingBuilder.bind(decreaseAlbumCollectNumQueue()).to(dataSyncExchange()).with(Constants.DECREASE_ALBUM_COLLECT_NUMBER_KEY);
     }
 
     /**
@@ -176,6 +199,38 @@ public class DirectMqConfiguration {
     @Bean
     public Binding deletePostCommentBinding() {
         return BindingBuilder.bind(deletePostCommentQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_COMMENT_KEY);
+    }
+
+    /**
+     * @return 删除话题收藏信息队列
+     */
+    @Bean
+    public Queue deletePostCollectionQueue() {
+        return new Queue(Constants.DELETE_POST_COLLECTION_QUEUE);
+    }
+
+    /**
+     * @return 删除话题收藏信息绑定
+     */
+    @Bean
+    public Binding deletePostCollectionBinding() {
+        return BindingBuilder.bind(deletePostCollectionQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_COLLECTION_KEY);
+    }
+
+    /**
+     * @return 删除话题喜爱信息队列
+     */
+    @Bean
+    public Queue deletePostLikedQueue() {
+        return new Queue(Constants.DELETE_POST_LIKED_QUEUE);
+    }
+
+    /**
+     * @return 删除话题喜爱信息绑定
+     */
+    @Bean
+    public Binding deletePostLikedBinding() {
+        return BindingBuilder.bind(deletePostLikedQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_LIKED_KEY);
     }
 
     /**
@@ -225,6 +280,22 @@ public class DirectMqConfiguration {
     @Bean
     public Binding deleteAlbumCommentBinding() {
         return BindingBuilder.bind(deletePostCommentQueue()).to(dataSyncExchange()).with(Constants.DELETE_ALBUM_COMMENT_KEY);
+    }
+
+    /**
+     * @return 删除专辑收藏信息队列
+     */
+    @Bean
+    public Queue deleteAlbumCollectionQueue() {
+        return new Queue(Constants.DELETE_ALBUM_COLLECTION_QUEUE);
+    }
+
+    /**
+     * @return 删除专辑收藏信息绑定
+     */
+    @Bean
+    public Binding deleteAlbumCollectionBinding() {
+        return BindingBuilder.bind(deletePostCollectionQueue()).to(dataSyncExchange()).with(Constants.DELETE_ALBUM_COLLECTION_KEY);
     }
 
     /**

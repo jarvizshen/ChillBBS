@@ -21,15 +21,11 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
-public class Album {
+
+public class AlbumCollection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String albumName;
-    private String artist;
-    private long commentNum;
-    private long collectNum;
-    private String type;
-    private String picture;
-    private Integer publishYear;
+    private Long userId;
+    private Long albumId;
 }

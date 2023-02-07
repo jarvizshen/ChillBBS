@@ -114,15 +114,38 @@ public interface PostService {
     @SneakyThrows
 
     void decreaseComment(Long postId);
+    /**
+     * 点赞数量加一
+     *
+     * @param postId 话题id
+     */
+    @SneakyThrows
+
+    void increaseLike(Long postId);
 
     /**
-     * 改变话题收藏状态
+     * 点赞数量减一
      *
-     * @param postId    话题id
-     * @param collected 是否收藏
-     * @return 是否成功
+     * @param postId 话题id
      */
-    @Async("chillPool")
     @SneakyThrows
-    CompletableFuture<Boolean> collected(Long postId, Boolean collected);
+
+    void decreaseLike(Long postId);
+    /**
+     * 收藏数量加一
+     *
+     * @param postId 话题id
+     */
+    @SneakyThrows
+
+    void increaseCollect(Long postId);
+
+    /**
+     * 收藏数量减一
+     *
+     * @param postId 话题id
+     */
+    @SneakyThrows
+
+    void decreaseCollect(Long postId);
 }

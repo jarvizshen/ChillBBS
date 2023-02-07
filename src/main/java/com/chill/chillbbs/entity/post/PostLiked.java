@@ -1,4 +1,4 @@
-package com.chill.chillbbs.entity.album;
+package com.chill.chillbbs.entity.post;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,15 +21,10 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor
-public class Album {
+public class PostLiked {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String albumName;
-    private String artist;
-    private long commentNum;
-    private long collectNum;
-    private String type;
-    private String picture;
-    private Integer publishYear;
+    private Long userId;
+    private Long postId;
 }

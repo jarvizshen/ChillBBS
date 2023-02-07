@@ -58,4 +58,23 @@ public class AlbumListener {
             e.printStackTrace();
         }
     }
+
+    @RabbitListener(queues = {Constants.DECREASE_ALBUM_COMMENT_NUMBER_QUEUE})
+    public void decreaseCollectListener(Long id, Channel channel,
+                                        @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
+        try {
+            log.info("减少收藏收到参数：{}", id);
+            albumService.decreaseCollect(id);
+            channel.basicAck(tag, false);
+        } catch (Exception e) {
+            try {
+                //nack返回false，重新返回队列
+                channel.basicNack(tag, false, true);
+            } catch (IOException exception) {
+                log.error("返回队列失败：{}", exception.getMessage());
+            }
+            log.error("同步失败：{}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

@@ -67,6 +67,8 @@ public class PostServiceImpl implements PostService {
             postRepository.deleteById(id);
             rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_KEY, id);
             rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_FILE_KEY, id);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COLLECTION_KEY, id);
+            rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_LIKED_KEY, id);
             return CompletableFuture.completedFuture(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,13 +105,35 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public CompletableFuture<Boolean> collected(Long postId, Boolean collected) {
+    public void increaseLike(Long postId) {
         assert postRepository.findById(postId).isPresent();
         Post post = postRepository.findById(postId).get();
-        post.setCollected(collected ? 1 : 0);
-        post.setCollectNum(post.getCollectNum() + (collected ? 1 : -1));
+        post.setCommentNum(post.getLikeNum() + 1);
         saveOrUpdatePost(post);
-        return CompletableFuture.completedFuture(true);
+    }
+
+    @Override
+    public void decreaseLike(Long postId) {
+        assert postRepository.findById(postId).isPresent();
+        Post post = postRepository.findById(postId).get();
+        post.setCommentNum(post.getLikeNum() - 1);
+        saveOrUpdatePost(post);
+    }
+
+    @Override
+    public void increaseCollect(Long postId) {
+        assert postRepository.findById(postId).isPresent();
+        Post post = postRepository.findById(postId).get();
+        post.setCommentNum(post.getCollectNum() + 1);
+        saveOrUpdatePost(post);
+    }
+
+    @Override
+    public void decreaseCollect(Long postId) {
+        assert postRepository.findById(postId).isPresent();
+        Post post = postRepository.findById(postId).get();
+        post.setCommentNum(post.getCollectNum() - 1);
+        saveOrUpdatePost(post);
     }
 
 }

@@ -9,25 +9,6 @@ public class Constants {
      */
     public final static String EXCHANGE_NAME = "exchange.datasync";
 
-
-    /**
-     * 添加es话题队列名称
-     */
-    public final static String ADD_POST_DOC_QUEUE = "queue.postDoc.add";
-    /**
-     * 添加es话题队列路由键
-     */
-    public final static String ADD_POST_DOC_KEY = "addPostDoc";
-    /**
-     * 删除es话题队列名称
-     */
-    public final static String DELETE_POST_DOC_QUEUE = "queue.postDoc.delete";
-    /**
-     * 删除es话题路由键
-     */
-    public final static String DELETE_POST_DOC_KEY = "deletePostDoc";
-
-
     /**
      * 增加话题评论数量队列名称
      */
@@ -44,32 +25,39 @@ public class Constants {
      * 减少话题评论数量队列路由键
      */
     public final static String DECREASE_POST_COMMENT_NUMBER_KEY = "decreasePostCommentNumber";
+    /**
+     * 增加话题收藏数量队列名称
+     */
+    public final static String INCREASE_POST_COLLECT_NUMBER_QUEUE = "queue.postCollectNumber.increase";
+    /**
+     * 增加话题收藏数量队列路由键
+     */
+    public final static String INCREASE_POST_COLLECT_NUMBER_KEY = "increasePostCollectNumber";
+    /**
+     * 减少话题收藏数量队列名称
+     */
+    public final static String DECREASE_POST_COLLECT_NUMBER_QUEUE = "queue.postCollectNumber.decrease";
+    /**
+     * 减少话题收藏数量队列路由键
+     */
+    public final static String DECREASE_POST_COLLECT_NUMBER_KEY = "decreasePostCollectNumber";
+    /**
+     * 增加话题喜爱数量队列名称
+     */
+    public final static String INCREASE_POST_LIKE_NUMBER_QUEUE = "queue.postLikeNumber.increase";
+    /**
+     * 增加话题喜爱数量队列路由键
+     */
+    public final static String INCREASE_POST_LIKE_NUMBER_KEY = "increasePostLikeNumber";
+    /**
+     * 减少话题喜爱数量队列名称
+     */
+    public final static String DECREASE_POST_LIKE_NUMBER_QUEUE = "queue.postLikeNumber.decrease";
+    /**
+     * 减少话题喜爱数量队列路由键
+     */
+    public final static String DECREASE_POST_LIKE_NUMBER_KEY = "decreasePostLikeNumber";
 
-    /**
-     * 改变es话题收藏状态队列名称
-     */
-    public final static String POST_DOC_COLLECT_QUEUE = "queue.postDoc.collect";
-    /**
-     * 改变es话题收藏状态路由键
-     */
-    public final static String POST_DOC_COLLECT_KEY = "collectPostDoc";
-
-    /**
-     * 增加es话题评论数量队列名称
-     */
-    public final static String INCREASE_POST_DOC_COMMENT_NUMBER_QUEUE = "queue.postDocCommentNumber.increase";
-    /**
-     * 增加es话题评论数量队列路由键
-     */
-    public final static String INCREASE_POST_DOC_COMMENT_NUMBER_KEY = "increasePostDocCommentNumber";
-    /**
-     * 减少es话题评论数量队列名称
-     */
-    public final static String DECREASE_POST_DOC_COMMENT_NUMBER_QUEUE = "queue.postDocCommentNumber.decrease";
-    /**
-     * 减少es话题评论数量队列路由键
-     */
-    public final static String DECREASE_POST_DOC_COMMENT_NUMBER_KEY = "decreasePostDocCommentNumber";
 
 
     /**
@@ -80,6 +68,22 @@ public class Constants {
      * 删除话题评论路由键
      */
     public final static String DELETE_POST_COMMENT_KEY = "deletePostComment";
+    /**
+     * 删除话题收藏信息队列名称
+     */
+    public final static String DELETE_POST_COLLECTION_QUEUE = "queue.postCollection.delete";
+    /**
+     * 删除话题收藏信息路由键
+     */
+    public final static String DELETE_POST_COLLECTION_KEY = "deletePostCollection";
+    /**
+     * 删除话题喜爱信息队列名称
+     */
+    public final static String DELETE_POST_LIKED_QUEUE = "queue.postLiked.delete";
+    /**
+     * 删除话题喜爱信息路由键
+     */
+    public final static String DELETE_POST_LIKED_KEY = "deletePostLiked";
     /**
      * 删除话题附件队列名称
      */
@@ -115,7 +119,22 @@ public class Constants {
      * 减少专辑评论数量队列路由键
      */
     public final static String DECREASE_ALBUM_COMMENT_NUMBER_KEY = "decreaseAlbumCommentNumber";
-
+    /**
+     * 增加专辑收藏数量队列名称
+     */
+    public final static String INCREASE_ALBUM_COLLECT_NUMBER_QUEUE = "queue.albumCollectNumber.increase";
+    /**
+     * 增加专辑收藏数量队列路由键
+     */
+    public final static String INCREASE_ALBUM_COLLECT_NUMBER_KEY = "increaseAlbumCollectNumber";
+    /**
+     * 减少专辑收藏数量队列名称
+     */
+    public final static String DECREASE_ALBUM_COLLECT_NUMBER_QUEUE = "queue.albumCollectNumber.decrease";
+    /**
+     * 减少专辑收藏数量队列路由键
+     */
+    public final static String DECREASE_ALBUM_COLLECT_NUMBER_KEY = "decreaseAlbumCollectNumber";
 
     /**
      * 删除专辑评论队列名称
@@ -125,8 +144,14 @@ public class Constants {
      * 删除专辑评论路由键
      */
     public final static String DELETE_ALBUM_COMMENT_KEY = "deleteAlbumComment";
-
-
+    /**
+     * 删除专辑收藏信息队列名称
+     */
+    public final static String DELETE_ALBUM_COLLECTION_QUEUE = "queue.albumCollection.delete";
+    /**
+     * 删除专辑收藏信息路由键
+     */
+    public final static String DELETE_ALBUM_COLLECTION_KEY = "deleteAlbumCollection";
     /**
      * 删除专辑评论回复队列名称
      */
