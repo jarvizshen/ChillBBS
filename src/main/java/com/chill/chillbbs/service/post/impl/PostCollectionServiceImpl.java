@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -38,13 +39,14 @@ public class PostCollectionServiceImpl implements PostCollectionService {
 
     @Override
     public void deleteAll(Long postId) {
-        if (postCollectionRepository.findAllByPostId(postId).size() > 0) {
-            postCollectionRepository.findAllByPostId(postId).forEach(albumComment -> postCollectionRepository.deleteById(albumComment.getId()));
+        List<PostCollection> all = postCollectionRepository.findAllByPostId(postId);
+        if (all.size() > 0) {
+            all.forEach(albumComment -> postCollectionRepository.deleteById(albumComment.getId()));
         }
     }
 
     @Override
-    public CompletableFuture<Optional<PostCollection>> find(Long id) {
-        return CompletableFuture.completedFuture(postCollectionRepository.findById(id));
+    public CompletableFuture<Optional<PostCollection>> find(Long postId, Long userId) {
+        return CompletableFuture.completedFuture(postCollectionRepository.findByPostIdAndUserId(postId, userId));
     }
 }

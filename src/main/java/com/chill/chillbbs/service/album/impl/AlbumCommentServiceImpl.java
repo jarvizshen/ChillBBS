@@ -1,6 +1,7 @@
 package com.chill.chillbbs.service.album.impl;
 
 import com.chill.chillbbs.entity.album.AlbumComment;
+import com.chill.chillbbs.entity.post.Post;
 import com.chill.chillbbs.repository.album.AlbumCommentRepository;
 import com.chill.chillbbs.service.album.AlbumCommentService;
 import com.chill.chillbbs.service.util.Constants;
@@ -31,8 +32,9 @@ public class AlbumCommentServiceImpl implements AlbumCommentService {
 
     @Override
     public void deleteAllByAlbumId(Long albumId) {
-        if (albumCommentRepository.findAllByAlbumId(albumId).size() > 0) {
-            albumCommentRepository.findAllByAlbumId(albumId).forEach(albumComment -> {
+        List<AlbumComment> all = albumCommentRepository.findAllByAlbumId(albumId);
+        if (all.size() > 0) {
+            all.forEach(albumComment -> {
                 albumCommentRepository.deleteById(albumComment.getId());
                 rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_ALBUM_COMMENT_REPLY_KEY, albumComment.getId());
             });
@@ -63,5 +65,21 @@ public class AlbumCommentServiceImpl implements AlbumCommentService {
             e.printStackTrace();
             return CompletableFuture.completedFuture(false);
         }
+    }
+
+    @Override
+    public void increaseLike(Long albumCommentId) {
+        assert albumCommentRepository.findById(albumCommentId).isPresent();
+        AlbumComment albumComment = albumCommentRepository.findById(albumCommentId).get();
+        albumComment.setLikeNum(albumComment.getLikeNum() + 1);
+        add(albumComment);
+    }
+
+    @Override
+    public void decreaseLike(Long albumCommentId) {
+        assert albumCommentRepository.findById(albumCommentId).isPresent();
+        AlbumComment albumComment = albumCommentRepository.findById(albumCommentId).get();
+        albumComment.setLikeNum(albumComment.getLikeNum() - 1);
+        add(albumComment);
     }
 }

@@ -62,6 +62,7 @@ public interface PostCommentService {
      */
     @Async("chillPool")
     CompletableFuture<Boolean> delete(PostComment postComment);
+
     /**
      * 获取一条评论
      *
@@ -70,4 +71,20 @@ public interface PostCommentService {
      */
     @Async("chillPool")
     CompletableFuture<Optional<PostComment>> getById(Long id);
+
+    /**
+     * 点赞数量加一
+     *
+     * @param postCommentId 话题评论id
+     */
+    @SneakyThrows
+    void increaseLike(Long postCommentId);
+
+    /**
+     * 点赞数量减一
+     *
+     * @param postCommentId 专辑评论id
+     */
+    @SneakyThrows
+    void decreaseLike(Long postCommentId);
 }

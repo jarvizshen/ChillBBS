@@ -37,9 +37,9 @@ public class PostCollectionController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Object> get(Long id) {
+    public ResponseEntity<Object> get(Long postId,Long userId) {
         try {
-            return ResponseEntity.ok(postCollectionService.find(id).get());
+            return ResponseEntity.ok(postCollectionService.find(postId,userId).get());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }

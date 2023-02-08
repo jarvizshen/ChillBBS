@@ -20,7 +20,7 @@ public interface AlbumCollectionService {
     CompletableFuture<AlbumCollection> saveOrUpdate(AlbumCollection albumCollection);
 
     /**
-     * 通过id删除
+     * 删除
      *
      * @param albumCollection 收藏专辑
      */
@@ -36,11 +36,12 @@ public interface AlbumCollectionService {
     void deleteAll(Long albumId);
 
     /**
-     * 按id查找
+     * 查找
      *
-     * @param id id
+     * @param albumId 专辑id
+     * @param userId  用户id
      * @return 收藏信息
      */
     @Async("chillPool")
-    CompletableFuture<Optional<AlbumCollection>> find(Long id);
+    CompletableFuture<Optional<AlbumCollection>> find(Long albumId, Long userId);
 }

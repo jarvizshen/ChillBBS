@@ -31,6 +31,7 @@ public class PostComment {
     private Long id;
     private Long userId;
     private Long postId;
+    private Long likeNum;
     private String content;
     private Date createTime;
 }

@@ -39,9 +39,9 @@ public class PostLikedController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Object> get(Long id) {
+    public ResponseEntity<Object> get(Long postId,Long userId) {
         try {
-            return ResponseEntity.ok(postLikedService.find(id).get());
+            return ResponseEntity.ok(postLikedService.find(postId,userId).get());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }

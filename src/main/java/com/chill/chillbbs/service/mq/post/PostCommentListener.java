@@ -38,4 +38,41 @@ public class PostCommentListener {
             e.printStackTrace();
         }
     }
+    @RabbitListener(queues = {Constants.DECREASE_POST_COMMENT_LIKE_NUMBER_QUEUE})
+    public void decreaseLikeNumListener(Long id, Channel channel,
+                                        @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
+        try {
+            log.info("减少话题评论喜爱收到参数：{}", id);
+            postCommentService.decreaseLike(id);
+            channel.basicAck(tag, false);
+        } catch (Exception e) {
+            try {
+                //nack返回false，重新返回队列
+                channel.basicNack(tag, false, true);
+            } catch (IOException exception) {
+                log.error("返回队列失败：{}", exception.getMessage());
+            }
+            log.error("同步失败：{}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @RabbitListener(queues = {Constants.INCREASE_POST_COMMENT_LIKE_NUMBER_QUEUE})
+    public void increaseLikeNumListener(Long id, Channel channel,
+                                        @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
+        try {
+            log.info("增加专辑评论喜爱收到参数：{}", id);
+            postCommentService.increaseLike(id);
+            channel.basicAck(tag, false);
+        } catch (Exception e) {
+            try {
+                //nack返回false，重新返回队列
+                channel.basicNack(tag, false, true);
+            } catch (IOException exception) {
+                log.error("返回队列失败：{}", exception.getMessage());
+            }
+            log.error("同步失败：{}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

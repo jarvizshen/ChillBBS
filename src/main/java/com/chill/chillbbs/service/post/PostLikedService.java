@@ -38,9 +38,10 @@ public interface PostLikedService {
     /**
      * 按id查找
      *
-     * @param id id
+     * @param postId 话题id
+     * @param userId 用户id
      * @return 喜爱话题
      */
     @Async("chillPool")
-    CompletableFuture<Optional<PostLiked>> find(Long id);
+    CompletableFuture<Optional<PostLiked>> find(Long postId, Long userId);
 }

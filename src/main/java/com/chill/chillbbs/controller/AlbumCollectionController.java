@@ -33,7 +33,7 @@ public class AlbumCollectionController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Object> get(Long id) {
-        return ResponseEntity.ok(albumCollectionService.find(id));
+    public ResponseEntity<Object> get(Long albumId, Long userId) {
+        return ResponseEntity.ok(albumCollectionService.find(albumId, userId));
     }
 }

@@ -38,10 +38,11 @@ public interface PostCollectionService {
     /**
      * 按id查找
      *
-     * @param id id
+     * @param postId 话题id
+     * @param userId 用户id
      * @return 话题收藏信息
      */
     @Async("chillPool")
-    CompletableFuture<Optional<PostCollection>> find(Long id);
+    CompletableFuture<Optional<PostCollection>> find(Long postId, Long userId);
 
 }

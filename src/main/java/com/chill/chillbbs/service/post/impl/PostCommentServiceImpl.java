@@ -1,5 +1,6 @@
 package com.chill.chillbbs.service.post.impl;
 
+import com.chill.chillbbs.entity.album.AlbumComment;
 import com.chill.chillbbs.entity.post.PostComment;
 import com.chill.chillbbs.repository.post.PostCommentRepository;
 import com.chill.chillbbs.service.post.PostCommentService;
@@ -38,8 +39,9 @@ public class PostCommentServiceImpl implements PostCommentService {
 
     @Override
     public void deleteAllByPostId(Long postId) {
-        if (postCommentRepository.findAllByPostId(postId).size() > 0) {
-            postCommentRepository.findAllByPostId(postId).forEach(postComment -> {
+        List<PostComment> all = postCommentRepository.findAllByPostId(postId);
+        if (all.size() > 0) {
+            all.forEach(postComment -> {
                 postCommentRepository.deleteById(postComment.getId());
                 rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.DELETE_POST_COMMENT_REPLY_KEY, postComment.getId());
             });
@@ -75,5 +77,21 @@ public class PostCommentServiceImpl implements PostCommentService {
     @Override
     public CompletableFuture<Optional<PostComment>> getById(Long id) {
         return CompletableFuture.completedFuture(postCommentRepository.findById(id));
+    }
+
+    @Override
+    public void increaseLike(Long postCommentId) {
+        assert postCommentRepository.findById(postCommentId).isPresent();
+        PostComment postComment = postCommentRepository.findById(postCommentId).get();
+        postComment.setLikeNum(postComment.getLikeNum() + 1);
+        add(postComment);
+    }
+
+    @Override
+    public void decreaseLike(Long postCommentId) {
+        assert postCommentRepository.findById(postCommentId).isPresent();
+        PostComment postComment = postCommentRepository.findById(postCommentId).get();
+        postComment.setLikeNum(postComment.getLikeNum() - 1);
+        add(postComment);
     }
 }

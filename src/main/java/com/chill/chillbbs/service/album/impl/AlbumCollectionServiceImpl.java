@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -46,13 +47,14 @@ public class AlbumCollectionServiceImpl implements AlbumCollectionService {
 
     @Override
     public void deleteAll(Long albumId) {
-        if (albumCollectionRepository.findAllByAlbumId(albumId).size() > 0) {
-            albumCollectionRepository.findAllByAlbumId(albumId).forEach(albumComment -> albumCollectionRepository.deleteById(albumComment.getId()));
+        List<AlbumCollection> all = albumCollectionRepository.findAllByAlbumId(albumId);
+        if (all.size() > 0) {
+            all.forEach(albumComment -> albumCollectionRepository.deleteById(albumComment.getId()));
         }
     }
 
     @Override
-    public CompletableFuture<Optional<AlbumCollection>> find(Long id) {
-        return CompletableFuture.completedFuture(albumCollectionRepository.findById(id));
+    public CompletableFuture<Optional<AlbumCollection>> find(Long albumId, Long userId) {
+        return CompletableFuture.completedFuture(albumCollectionRepository.findByAlbumIdAndUserId(albumId, userId));
     }
 }

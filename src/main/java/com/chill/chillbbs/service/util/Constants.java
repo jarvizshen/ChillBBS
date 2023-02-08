@@ -57,7 +57,22 @@ public class Constants {
      * 减少话题喜爱数量队列路由键
      */
     public final static String DECREASE_POST_LIKE_NUMBER_KEY = "decreasePostLikeNumber";
-
+    /**
+     * 增加话题评论喜爱数量队列名称
+     */
+    public final static String INCREASE_POST_COMMENT_LIKE_NUMBER_QUEUE = "queue.postCommentLikeNumber.increase";
+    /**
+     * 增加话题评论喜爱数量队列路由键
+     */
+    public final static String INCREASE_POST_COMMENT_LIKE_NUMBER_KEY = "increasePostCommentLikeNumber";
+    /**
+     * 减少话题评论喜爱数量队列名称
+     */
+    public final static String DECREASE_POST_COMMENT_LIKE_NUMBER_QUEUE = "queue.postCommentLikeNumber.decrease";
+    /**
+     * 减少话题评论喜爱数量队列路由键
+     */
+    public final static String DECREASE_POST_COMMENT_LIKE_NUMBER_KEY = "decreasePostCommentLikeNumber";
 
 
     /**
@@ -84,6 +99,14 @@ public class Constants {
      * 删除话题喜爱信息路由键
      */
     public final static String DELETE_POST_LIKED_KEY = "deletePostLiked";
+    /**
+     * 删除话题评论喜爱信息队列名称
+     */
+    public final static String DELETE_POST_COMMENT_LIKED_QUEUE = "queue.postCommentLiked.delete";
+    /**
+     * 删除话题评论喜爱信息路由键
+     */
+    public final static String DELETE_POST_COMMENT_LIKED_KEY = "deletePostCommentLiked";
     /**
      * 删除话题附件队列名称
      */
@@ -135,6 +158,22 @@ public class Constants {
      * 减少专辑收藏数量队列路由键
      */
     public final static String DECREASE_ALBUM_COLLECT_NUMBER_KEY = "decreaseAlbumCollectNumber";
+    /**
+     * 增加专辑评论喜爱数量队列名称
+     */
+    public final static String INCREASE_ALBUM_COMMENT_LIKE_NUMBER_QUEUE = "queue.albumCommentLikeNumber.increase";
+    /**
+     * 增加专辑评论喜爱数量队列路由键
+     */
+    public final static String INCREASE_ALBUM_COMMENT_LIKE_NUMBER_KEY = "increaseAlbumCommentLikeNumber";
+    /**
+     * 减少专辑评论喜爱数量队列名称
+     */
+    public final static String DECREASE_ALBUM_COMMENT_LIKE_NUMBER_QUEUE = "queue.albumCommentLikeNumber.decrease";
+    /**
+     * 减少专辑评论喜爱数量队列路由键
+     */
+    public final static String DECREASE_ALBUM_COMMENT_LIKE_NUMBER_KEY = "decreaseAlbumCommentLikeNumber";
 
     /**
      * 删除专辑评论队列名称
@@ -160,6 +199,14 @@ public class Constants {
      * 删除专辑评论回复路由键
      */
     public final static String DELETE_ALBUM_COMMENT_REPLY_KEY = "deleteAlbumCommentReplyReply";
+    /**
+     * 删除专辑评论喜爱信息队列名称
+     */
+    public final static String DELETE_ALBUM_COMMENT_LIKED_QUEUE = "queue.albumCommentLiked.delete";
+    /**
+     * 删除专辑评论喜爱信息路由键
+     */
+    public final static String DELETE_ALBUM_COMMENT_LIKED_KEY = "deleteAlbumCommentLiked";
 
 
     /**

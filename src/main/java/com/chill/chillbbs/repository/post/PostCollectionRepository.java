@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Jarviz
@@ -20,4 +21,13 @@ public interface PostCollectionRepository extends JpaRepository<PostCollection, 
      * @return 所有对应信息
      */
     List<PostCollection> findAllByPostId(Long postId);
+
+    /**
+     * 根据话题和用户id查找收藏信息
+     *
+     * @param postId 话题id
+     * @param userId 用户id
+     * @return 收藏信息
+     */
+    Optional<PostCollection> findByPostIdAndUserId(Long postId, Long userId);
 }

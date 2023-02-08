@@ -21,7 +21,6 @@ public interface AlbumCommentService {
      */
     @Async("chillPool")
     @SneakyThrows
-
     CompletableFuture<List<AlbumComment>> getCommentsByAlbumId(Long id);
 
     /**
@@ -49,4 +48,20 @@ public interface AlbumCommentService {
      */
     @Async("chillPool")
     CompletableFuture<Boolean> delete(AlbumComment albumComment);
+
+    /**
+     * 点赞数量加一
+     *
+     * @param albumCommentId 专辑评论id
+     */
+    @SneakyThrows
+    void increaseLike(Long albumCommentId);
+
+    /**
+     * 点赞数量减一
+     *
+     * @param albumCommentId 专辑评论id
+     */
+    @SneakyThrows
+    void decreaseLike(Long albumCommentId);
 }

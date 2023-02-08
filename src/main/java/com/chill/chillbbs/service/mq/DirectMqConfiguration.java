@@ -120,6 +120,38 @@ public class DirectMqConfiguration {
         return BindingBuilder.bind(decreasePostLikeNumQueue()).to(dataSyncExchange()).with(Constants.DECREASE_POST_LIKE_NUMBER_KEY);
     }
 
+    /**
+     * @return 增加话题评论喜爱数量队列
+     */
+    @Bean
+    public Queue increasePostCommentLikeNumQueue() {
+        return new Queue(Constants.INCREASE_POST_COMMENT_LIKE_NUMBER_QUEUE);
+    }
+
+    /**
+     * @return 增加话题评论喜爱数量绑定
+     */
+    @Bean
+    public Binding increasePostCommentLikeNumBinding() {
+        return BindingBuilder.bind(increasePostCommentLikeNumQueue()).to(dataSyncExchange()).with(Constants.INCREASE_POST_COMMENT_LIKE_NUMBER_KEY);
+    }
+
+    /**
+     * @return 减少话题评论喜爱数量队列
+     */
+    @Bean
+    public Queue decreasePostCommentLikeNumQueue() {
+        return new Queue(Constants.DECREASE_POST_COMMENT_LIKE_NUMBER_QUEUE);
+    }
+
+    /**
+     * @return 减少话题评论喜爱数量绑定
+     */
+    @Bean
+    public Binding decreasePostCommentLikeNumBinding() {
+        return BindingBuilder.bind(decreasePostCommentLikeNumQueue()).to(dataSyncExchange()).with(Constants.DECREASE_POST_COMMENT_LIKE_NUMBER_KEY);
+    }
+
 
     /**
      * @return 增加专辑评论数量队列
@@ -183,6 +215,38 @@ public class DirectMqConfiguration {
     @Bean
     public Binding decreaseAlbumCollectNumBinding() {
         return BindingBuilder.bind(decreaseAlbumCollectNumQueue()).to(dataSyncExchange()).with(Constants.DECREASE_ALBUM_COLLECT_NUMBER_KEY);
+    }
+
+    /**
+     * @return 增加专辑评论喜爱数量队列
+     */
+    @Bean
+    public Queue increaseAlbumCommentLikeNumQueue() {
+        return new Queue(Constants.INCREASE_ALBUM_COMMENT_LIKE_NUMBER_QUEUE);
+    }
+
+    /**
+     * @return 增加专辑评论喜爱数量绑定
+     */
+    @Bean
+    public Binding increaseAlbumCommentLikeNumBinding() {
+        return BindingBuilder.bind(increaseAlbumCommentLikeNumQueue()).to(dataSyncExchange()).with(Constants.INCREASE_ALBUM_COMMENT_LIKE_NUMBER_KEY);
+    }
+
+    /**
+     * @return 减少专辑评论喜爱数量队列
+     */
+    @Bean
+    public Queue decreaseAlbumCommentLikeNumQueue() {
+        return new Queue(Constants.DECREASE_ALBUM_COMMENT_LIKE_NUMBER_QUEUE);
+    }
+
+    /**
+     * @return 减少专辑评论喜爱数量绑定
+     */
+    @Bean
+    public Binding decreaseAlbumCommentLikeNumBinding() {
+        return BindingBuilder.bind(decreaseAlbumCommentLikeNumQueue()).to(dataSyncExchange()).with(Constants.DECREASE_ALBUM_COMMENT_LIKE_NUMBER_KEY);
     }
 
     /**
@@ -265,6 +329,22 @@ public class DirectMqConfiguration {
         return BindingBuilder.bind(deletePostCommentReplyQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_COMMENT_REPLY_KEY);
     }
 
+    /**
+     * @return 删除话题评论喜爱信息绑定
+     */
+    @Bean
+    public Queue deletePostCommentLikedQueue() {
+        return new Queue(Constants.DELETE_POST_COMMENT_LIKED_QUEUE);
+    }
+
+    /**
+     * @return 删除话题评论喜爱信息绑定
+     */
+    @Bean
+    public Binding deletePostCommentLikedBinding() {
+        return BindingBuilder.bind(deletePostCommentLikedQueue()).to(dataSyncExchange()).with(Constants.DELETE_POST_COMMENT_LIKED_KEY);
+    }
+
 
     /**
      * @return 删除专辑评论队列
@@ -312,6 +392,21 @@ public class DirectMqConfiguration {
     @Bean
     public Binding deleteAlbumCommentReplyBinding() {
         return BindingBuilder.bind(deletePostCommentReplyQueue()).to(dataSyncExchange()).with(Constants.DELETE_ALBUM_COMMENT_REPLY_KEY);
+    }
+    /**
+     * @return 删除专辑评论喜爱信息绑定
+     */
+    @Bean
+    public Queue deleteAlbumCommentLikedQueue() {
+        return new Queue(Constants.DELETE_ALBUM_COMMENT_LIKED_QUEUE);
+    }
+
+    /**
+     * @return 删除专辑评论喜爱信息绑定
+     */
+    @Bean
+    public Binding deleteAlbumCommentLikedBinding() {
+        return BindingBuilder.bind(deleteAlbumCommentLikedQueue()).to(dataSyncExchange()).with(Constants.DELETE_ALBUM_COMMENT_LIKED_KEY);
     }
 
 //    @Bean

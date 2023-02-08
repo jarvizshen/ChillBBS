@@ -29,7 +29,6 @@ public class Post {
     private String content;
     private String type;
     private String file;
-    private int collected;
     private long commentNum;
     private long likeNum;
     private long collectNum;

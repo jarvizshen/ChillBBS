@@ -41,8 +41,9 @@ public class PostCommentReplyServiceImpl implements PostCommentReplyService {
 
     @Override
     public void deleteAllByCommentId(Long commentId) {
-        if (postCommentReplyRepository.findAllByCommentId(commentId).size() > 0) {
-            postCommentReplyRepository.findAllByCommentId(commentId).forEach(postCommentReply -> postCommentReplyRepository.deleteById(postCommentReply.getId()));
+        List<PostCommentReply> all = postCommentReplyRepository.findAllByCommentId(commentId);
+        if (all.size() > 0) {
+            all.forEach(postCommentReply -> postCommentReplyRepository.deleteById(postCommentReply.getId()));
         }
     }
 }

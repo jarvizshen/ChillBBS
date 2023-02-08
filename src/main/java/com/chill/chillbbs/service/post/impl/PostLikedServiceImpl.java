@@ -9,6 +9,7 @@ import jakarta.annotation.Resource;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -39,13 +40,14 @@ public class PostLikedServiceImpl implements PostLikedService {
 
     @Override
     public void deleteAll(Long postId) {
-        if (postLikedRepository.findAllByPostId(postId).size() > 0) {
-            postLikedRepository.findAllByPostId(postId).forEach(albumComment -> postLikedRepository.deleteById(albumComment.getId()));
+        List<PostLiked> all = postLikedRepository.findAllByPostId(postId);
+        if (all.size() > 0) {
+            all.forEach(albumComment -> postLikedRepository.deleteById(albumComment.getId()));
         }
     }
 
     @Override
-    public CompletableFuture<Optional<PostLiked>> find(Long id) {
-        return CompletableFuture.completedFuture(postLikedRepository.findById(id));
+    public CompletableFuture<Optional<PostLiked>> find(Long postId, Long userId) {
+        return CompletableFuture.completedFuture(postLikedRepository.findByPostIdAndUserId(postId, userId));
     }
 }

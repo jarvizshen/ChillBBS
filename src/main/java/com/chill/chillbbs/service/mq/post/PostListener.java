@@ -78,12 +78,50 @@ public class PostListener {
         }
     }
 
+    @RabbitListener(queues = {Constants.INCREASE_POST_COLLECT_NUMBER_QUEUE})
+    public void increaseCollectNumListener(Long id, Channel channel,
+                                           @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
+        try {
+            log.info("增加话题收藏收到参数：{}", id);
+            postService.increaseCollect(id);
+            channel.basicAck(tag, false);
+        } catch (Exception e) {
+            try {
+                //nack返回false，重新返回队列
+                channel.basicNack(tag, false, true);
+            } catch (IOException exception) {
+                log.error("返回队列失败：{}", exception.getMessage());
+            }
+            log.error("同步失败：{}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     @RabbitListener(queues = {Constants.DECREASE_POST_LIKE_NUMBER_QUEUE})
     public void decreaseLikeNumListener(Long id, Channel channel,
                                         @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
         try {
             log.info("减少话题喜爱收到参数：{}", id);
             postService.decreaseLike(id);
+            channel.basicAck(tag, false);
+        } catch (Exception e) {
+            try {
+                //nack返回false，重新返回队列
+                channel.basicNack(tag, false, true);
+            } catch (IOException exception) {
+                log.error("返回队列失败：{}", exception.getMessage());
+            }
+            log.error("同步失败：{}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @RabbitListener(queues = {Constants.INCREASE_POST_LIKE_NUMBER_QUEUE})
+    public void increaseLikeNumListener(Long id, Channel channel,
+                                        @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
+        try {
+            log.info("增加话题喜爱收到参数：{}", id);
+            postService.increaseLike(id);
             channel.basicAck(tag, false);
         } catch (Exception e) {
             try {
